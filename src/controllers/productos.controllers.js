@@ -29,4 +29,18 @@ export const crearProducto =  async (req,res)=>{
    
 }
 
+export const listarProductos = async(req,res)=>{
+    try {
+        //pedirle a la BD la collection de productos
+        //enviar en la respuesta la lista de productos
+        const productos = await Producto.find()
+        res.status(200).json(productos)
+    } catch (error) {
+        //enviar un mensaje de error si falla
+        res.status(404).json({
+            mensaje: "Ocurrio un error, no se encontraron los productos"
+        })
+    }
+}
+
 
