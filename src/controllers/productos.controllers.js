@@ -45,14 +45,18 @@ export const listarProductos = async(req,res)=>{
 export const obtenerProducto = async(req,res)=>{
     try {
         //extraer de la solicitud el ID
-        console.log(req.params.id)
-
-        //pedirle a la BD que busque ese producto
         
+        //pedirle a la BD que busque ese producto
+        const productoBuscado = await Producto.findById(req.params.id)
+        if(!productoBuscado){
+            return res.status(404).json({mensaje: "El producto no fue encontrado"})
+        }
+        //enviar el producto
+        res.status(200).json(productoBuscado)
     } catch (error) {
         //enviar un mensaje de error si falla
         res.status(404).json({
-            mensaje: "Ocurrio un error, no se encontraron los productos"
+            mensaje: "Ocurrio un error, no se pudo obtener el producto"
         })
     }
 }
