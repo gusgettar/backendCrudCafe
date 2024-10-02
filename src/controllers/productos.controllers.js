@@ -1,3 +1,4 @@
+import e from "express"
 import Producto from "../database/model/producto.js"
 
 export const leerPrueba =  (req,res)=>{
@@ -58,6 +59,22 @@ export const obtenerProducto = async(req,res)=>{
         res.status(404).json({
             mensaje: "Ocurrio un error, no se pudo obtener el producto"
         })
+    }
+}
+
+export const borrarProducto = async (req,res)=>{
+    try {
+        //Primero quiero saber si esta el id, si no esta contesto con un codigo de error
+        const productoBuscado = await Producto.findById(req.params.id)
+        if(!productoBuscado){
+            return res.status(404).json({mensaje: "El producto no fue encontrado"})
+        }
+        //si esta le pido a la bd que borre el producto
+        await Producto.findByIdAndDelete(req.params.id)
+        res.status(200).json({mensaje: 'El producto fue eliminado correctamente'})
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({mensaje: "Ocurrio un error, al intentar borrar un producto"})
     }
 }
 
